@@ -40,13 +40,16 @@ const { developmentChains } = require("../../helper-hardhat-config")
                       TOKEN_ID,
                       PRICE
                   )
-                  const error = `NftMarketplace__AlreadyListed("${basicNft.address}", ${TOKEN_ID})`
+                  //const error = ` NftMarketplace__AlreadyListed("${basicNft.address}", ${TOKEN_ID})`
                   //   await expect(
                   //       NftMarketplace.listItem(basicNft.address, TOKEN_ID, PRICE)
                   //   ).to.be.revertedWith("AlreadyListed")
                   await expect(
                       NftMarketplace.listItem(basicNft.address, TOKEN_ID, PRICE)
-                  ).to.be.revertedWithCustomError(NftMarketplace, error)
+                  ).to.be.revertedWithCustomError(
+                      NftMarketplace,
+                      "NftMarketplace__AlreadyListed"
+                  )
               })
               it("exclusively allows owners to list", async function () {
                   NftMarketplace = NftMarketplaceContract.connect(user)
@@ -83,10 +86,13 @@ const { developmentChains } = require("../../helper-hardhat-config")
           })
           describe("cancelListing", function () {
               it("reverts if there is no listing", async function () {
-                  const error = `NftMarketplace__NotListed("${basicNft.address}", ${TOKEN_ID})`
+                  //const error = `NftMarketplace__NotListed("${basicNft.address}", ${TOKEN_ID})`
                   await expect(
                       NftMarketplace.cancelListing(basicNft.address, TOKEN_ID)
-                  ).to.be.revertedWithCustomError(NftMarketplace, error)
+                  ).to.be.revertedWithCustomError(
+                      NftMarketplace,
+                      "NftMarketplace__NotListed"
+                  )
               })
               it("reverts if anyone but the owner tries to call", async function () {
                   await NftMarketplace.listItem(
